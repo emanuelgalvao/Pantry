@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="BottomAppBarTheme" parent="Theme.MaterialComponents.Light.Bridge">
+        <item name="colorPrimary">@color/bottom_navigation_background</item>
+        <item name="colorPrimaryDark">@color/bottom_navigation_background</item>
+        <item name="colorAccent">@color/bottom_navigation_background</item>
+        <item name="android:textColorPrimary">@color/bottom_navigation_background</item>
+        <item name="android:colorBackground">@color/bottom_navigation_background</item>
+    </style>
 </resources>

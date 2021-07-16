@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/nav_home">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.emanuelgalvao.pantry.ui.home.HomeFragment"
+        android:id="@+id/nav_home"
+        android:name="com.emanuelgalvao.pantry.ui.fragment.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.emanuelgalvao.pantry.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/nav_pantry"
+        android:name="com.emanuelgalvao.pantry.ui.fragment.PantryFragment"
+        android:label="@string/pantry"
+        tools:layout="@layout/fragment_pantry" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.emanuelgalvao.pantry.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/nav_shopping_list"
+        android:name="com.emanuelgalvao.pantry.ui.fragment.ShoppingListFragment"
+        android:label="@string/shopping_list_nav"
+        tools:layout="@layout/fragment_shopping_list" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.emanuelgalvao.pantry.ui.fragment.ProfileFragment"
+        android:label="@string/shopping_list"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

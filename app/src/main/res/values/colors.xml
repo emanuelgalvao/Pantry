@@ -12,6 +12,7 @@
     <color name="background_red">#FA5555</color>
     <color name="background_blue">#4389F3</color>
     <color name="background_white">#FFFFFF</color>
+    <color name="background_gray">#EBEBEB</color>
 
     <!-- TEXT -->
     <color name="text_black">#1a1a1a</color>

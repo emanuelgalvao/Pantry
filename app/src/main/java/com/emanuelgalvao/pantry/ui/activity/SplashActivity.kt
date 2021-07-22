@@ -5,19 +5,45 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.viewmodel.LoginViewModel
 
 class SplashActivity : AppCompatActivity() {
+
+    private lateinit var mViewModel: LoginViewModel
+
+    private var logged = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
         supportActionBar?.hide()
 
+        mViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
+        observers()
+        mViewModel.verifySignedInUser()
+
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
+            var intent: Intent
+
+            if (logged) {
+                intent = Intent(this, MainActivity::class.java)
+            } else {
+                intent = Intent(this, LoginActivity::class.java)
+            }
             startActivity(intent)
             finish()
         }, 3000)
+    }
+
+    private fun observers() {
+        mViewModel.logged.observe(this, {
+            if (it.isSucess()) {
+                logged = true
+            }
+        })
     }
 }

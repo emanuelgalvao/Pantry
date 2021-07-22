@@ -21,6 +21,22 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val mRegister = MutableLiveData<ValidationListener>()
     val register: LiveData<ValidationListener> = mRegister
 
+    private val mLogged = MutableLiveData<ValidationListener>()
+    val logged: LiveData<ValidationListener> = mLogged
+
+    fun verifySignedInUser() {
+        mRepository.verifySignedInUser(object : FirebaseListener<User>{
+            override fun onSucess(model: User) {
+                mLogged.value = ValidationListener()
+            }
+
+            override fun onFailure(message: String) {
+                mLogged.value = ValidationListener("Não logado")
+            }
+
+        })
+    }
+
     fun login(email: String, password: String) {
 
         if (email != "" && password != "") {

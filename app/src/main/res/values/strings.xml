@@ -33,4 +33,6 @@
     <string name="email">Email</string>
     <string name="password">Senha</string>
     <string name="register_button">Cadastrar</string>
+    <string name="fill_manually">Preencher manualmente</string>
+    <string name="point_the_camera">Aponte a camera para o código de barras do item</string>
 </resources>

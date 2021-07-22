@@ -11,8 +11,8 @@ interface UserDAO {
     @Insert
     fun save(user: User)
 
-    @Query("SELECT * FROM user LIMIT 1")
-    fun find()
+    /*@Query("SELECT * FROM user LIMIT 1")
+    fun find()*/
 
     @Query("DELETE FROM user")
     fun clear()

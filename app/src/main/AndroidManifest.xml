@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emanuelgalvao.pantry">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pantry">
-        <activity android:name=".ui.activity.RegisterActivity"/>
+        <activity android:name=".ui.activity.ShoppingListFormActivity"></activity>
+        <activity android:name=".ui.activity.PantryFormActivity" />
+        <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
@@ -20,8 +24,11 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name" />
+
+        <meta-data
+            android:name = "apiToken"
+            android:value = "${API_TOKEN}"/>
     </application>
 
 </manifest>

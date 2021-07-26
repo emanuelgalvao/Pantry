@@ -7,7 +7,7 @@ class StringUtils {
     companion object {
 
         fun validateEmail(email: String): Boolean {
-            return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+            return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
         }
 
         fun validatePassword(password: String): Boolean {

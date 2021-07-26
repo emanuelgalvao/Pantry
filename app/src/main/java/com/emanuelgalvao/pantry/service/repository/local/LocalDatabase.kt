@@ -1,15 +1,17 @@
-package com.emanuelgalvao.pantry.service.repository
+package com.emanuelgalvao.pantry.service.repository.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.emanuelgalvao.pantry.service.model.User
+import com.emanuelgalvao.pantry.service.model.PantryItem
+import com.emanuelgalvao.pantry.service.model.ShoppingItem
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [PantryItem::class, ShoppingItem::class], version = 1)
 abstract class LocalDatabase : RoomDatabase() {
 
-    abstract fun userDAO(): UserDAO
+    abstract fun pantryItemDAO(): PantryItemDAO
+    abstract fun shoppingItemDAO(): ShoppingItemDAO
 
     companion object {
         private lateinit var INSTANCE: LocalDatabase

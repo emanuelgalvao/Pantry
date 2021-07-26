@@ -1,24 +1,18 @@
 package com.emanuelgalvao.pantry.ui.activity
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.emanuelgalvao.pantry.R
 import com.emanuelgalvao.pantry.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.zxing.integration.android.IntentIntegrator
-import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -34,7 +28,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
@@ -43,7 +36,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.nav_profile
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+        val navController = navHostFragment?.findNavController()
+
+        setupActionBarWithNavController(navController!!, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         fab_add.setOnClickListener(this)
@@ -61,33 +58,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val options = arrayOf("Adicionar na despensa", "Adicionar na lista de compras")
         builder.setItems(options) { dialog, which ->
             when (which) {
-                0 -> {
-                    IntentIntegrator(this)
-                        .setDesiredBarcodeFormats(IntentIntegrator.EAN_13)
-                        .setBeepEnabled(false)
-                        .initiateScan()
-                }
-                1 -> Toast.makeText(this, "Lista", Toast.LENGTH_SHORT).show()
+                0 -> startActivity(Intent(this, ReadCodeActivity::class.java))
+                1 -> startActivity(Intent(this, ShoppingListFormActivity::class.java))
             }
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
-            val result: IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-            if (result != null) {
-                if (result.contents == null) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this, "Scanned: " + result.contents, Toast.LENGTH_LONG)
-                        .show()
-                }
-            } else {
-                super.onActivityResult(requestCode, resultCode, data)
-            }
-        }
     }
 }

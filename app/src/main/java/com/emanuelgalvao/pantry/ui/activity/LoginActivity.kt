@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 text_enter_button.isVisible = true
                 progress_login.isVisible = false
-                AlertUtils.showSnackbar(root, it.getMessage())
+                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
             }
         })
     }

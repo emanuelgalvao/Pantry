@@ -1,33 +1,53 @@
 package com.emanuelgalvao.pantry.ui.fragment
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.ui.activity.LoginActivity
+import com.emanuelgalvao.pantry.ui.activity.UserDataActivity
 import com.emanuelgalvao.pantry.viewmodel.ProfileViewModel
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), View.OnClickListener {
 
-    companion object {
-        fun newInstance() = ProfileFragment()
+    private lateinit var mViewModel: ProfileViewModel
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val root = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+
+        root.text_my_data.setOnClickListener(this)
+        root.text_log_out.setOnClickListener(this)
+
+        observers()
+
+        return root
     }
 
-    private lateinit var viewModel: ProfileViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.text_my_data -> startActivity(Intent(activity, UserDataActivity::class.java))
+            R.id.text_log_out -> logout()
+        }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun observers() {
+        mViewModel.logout.observe(viewLifecycleOwner, {
+            if (it.isSucess()) {
+                startActivity(Intent(context, LoginActivity::class.java))
+                activity?.finish()
+            }
+        })
+    }
+
+    private fun logout() {
+        mViewModel.logout()
     }
 
 }

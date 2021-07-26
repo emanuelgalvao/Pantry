@@ -21,6 +21,9 @@
     <color name="text_white">#FFFFFF</color>
     <color name="text_blue">#4389F3</color>
     <color name="text_dark_gray">#ACACAC</color>
+    <color name="text_dark_red">#981616</color>
+    <color name="text_dark_yellow">#877B11</color>
+    <color name="text_dark_yellow_soon">#91872C</color>
 
     <!-- SHAPES -->
     <color name="shape_green">#28A745</color>
@@ -28,6 +31,10 @@
     <color name="shape_blue">#4389F3</color>
     <color name="shape_gray">#EBEBEB</color>
     <color name="shape_dark_gray">#D9D9D9</color>
+
+    <color name="shape_due_today">#F4E561</color>
+    <color name="shape_due_expired">#FA5555</color>
+    <color name="shape_due_expired_soon">#EFE8AF</color>
 
     <!-- ICONS -->
     <color name="icon_dark_red">#A82B2B</color>
@@ -37,4 +44,10 @@
     <color name="bottom_navigation_background">#FA5555</color>
     <color name="bottom_navigation_icon">#C93A3A</color>
     <color name="bottom_navigation_selected">#FFFFFF</color>
+    <color name="text_dark">#707070</color>
+
+    <!-- SNACKBAR -->
+    <color name="snack_red">#FA5555</color>
+    <color name="snack_green">#28A745</color>
+
 </resources>

@@ -37,12 +37,13 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun register() {
+        val name = edit_name.text.toString().trim()
         val email = edit_email.text.toString().trim()
         val password = edit_password.text.toString().trim()
 
         text_register.isVisible = false
         progress_register.isVisible = true
-        mViewModel.register(email, password)
+        mViewModel.register(name, email, password)
     }
 
     private fun observers() {
@@ -52,7 +53,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 text_register.isVisible = true
                 progress_register.isVisible = false
-                AlertUtils.showSnackbar(root, it.getMessage())
+                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
             }
         })
     }

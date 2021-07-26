@@ -4,8 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.emanuelgalvao.pantry.service.listener.FirebaseListener
+import com.emanuelgalvao.pantry.service.listener.ApiListener
 import com.emanuelgalvao.pantry.service.listener.ValidationListener
 import com.emanuelgalvao.pantry.service.model.User
 import com.emanuelgalvao.pantry.service.repository.UserRepository
@@ -25,7 +24,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val logged: LiveData<ValidationListener> = mLogged
 
     fun verifySignedInUser() {
-        mRepository.verifySignedInUser(object : FirebaseListener<User>{
+        mRepository.verifySignedInUser(object : ApiListener<User>{
             override fun onSucess(model: User) {
                 mLogged.value = ValidationListener()
             }
@@ -45,7 +44,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }else if(!StringUtils.validatePassword(password)) {
                 mLogin.value = ValidationListener("Senha inválida!")
             } else {
-                mRepository.login(email, password, object : FirebaseListener<User> {
+                mRepository.login(email, password, object : ApiListener<User> {
                     override fun onSucess(model: User) {
                         mLogin.value = ValidationListener()
                     }
@@ -61,15 +60,15 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun register(email: String, password: String) {
+    fun register(name: String, email: String, password: String) {
 
-        if (email != "" && password != "") {
+        if (name != "" && email != "" && password != "") {
             if(!StringUtils.validateEmail(email)) {
                 mRegister.value = ValidationListener("Email inválido!")
             }else if(!StringUtils.validatePassword(password)) {
                 mRegister.value = ValidationListener("A senha deve ter pelo menos 6 caracteres.")
             } else {
-                mRepository.register(email, password, object : FirebaseListener<User> {
+                mRepository.register(name, email, password, object : ApiListener<User> {
                     override fun onSucess(model: User) {
                         mRegister.value = ValidationListener()
                     }
@@ -78,6 +77,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 })
             }
+        } else if (name == ""){
+            mRegister.value = ValidationListener("Preencha o nome.")
         } else if(email == ""){
             mRegister.value = ValidationListener("Preencha o email.")
         } else {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pantry</string>
+    <string name="app_name">Pantry - Gestão de Validade</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -8,12 +8,12 @@
     <string name="shopping_list_nav">Comprar</string>
     <string name="profile">Perfil</string>
     <string name="hello">Olá Name!</string>
-    <string name="items_due_soon">Itens com vencimento próximo</string>
+    <string name="items_due_soon">Itens na sua despensa</string>
     <string name="shopping_list">Lista de Compras</string>
     <string name="see_more">Ver mais...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="due_date">Vencimento</string>
+    <string name="due_date">Validade</string>
     <string name="date_default">00/00</string>
     <string name="name_item_default">Nome Item</string>
     <string name="my_pantry">Minha despensa</string>
@@ -35,4 +35,14 @@
     <string name="register_button">Cadastrar</string>
     <string name="fill_manually">Preencher manualmente</string>
     <string name="point_the_camera">Aponte a camera para o código de barras do item</string>
+    <string name="wait">Carregando dados do item.\nAguarde...</string>
+    <string name="add_item">Adicionar item</string>
+    <string name="product">Produto</string>
+    <string name="date_placeholder">00/00/0000</string>
+    <string name="save">Salvar</string>
+    <string name="click">Clique para escolher...</string>
+    <string name="quantity_placeholder">1</string>
+    <string name="logout">Sair</string>
+    <string name="description">Descrição</string>
+    <string name="quantity">Quantidade</string>
 </resources>

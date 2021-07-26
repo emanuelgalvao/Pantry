@@ -1,6 +1,6 @@
 package com.emanuelgalvao.pantry.service.listener
 
-interface FirebaseListener<T> {
+interface ApiListener<T> {
 
     fun onSucess(model: T)
 

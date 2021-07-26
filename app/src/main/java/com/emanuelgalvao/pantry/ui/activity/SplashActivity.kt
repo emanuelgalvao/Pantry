@@ -27,12 +27,11 @@ class SplashActivity : AppCompatActivity() {
         mViewModel.verifySignedInUser()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            var intent: Intent
 
-            if (logged) {
-                intent = Intent(this, MainActivity::class.java)
+            val intent: Intent = if (logged) {
+                Intent(this, MainActivity::class.java)
             } else {
-                intent = Intent(this, LoginActivity::class.java)
+                Intent(this, LoginActivity::class.java)
             }
             startActivity(intent)
             finish()

@@ -1,29 +1,29 @@
 package com.emanuelgalvao.pantry.service.repository
 
 import android.content.Context
-import com.emanuelgalvao.pantry.service.listener.FirebaseListener
+import com.emanuelgalvao.pantry.service.listener.ApiListener
 import com.emanuelgalvao.pantry.service.model.User
+import com.emanuelgalvao.pantry.service.repository.local.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class UserRepository(val context: Context)  {
 
-    private val auth: FirebaseAuth = Firebase.auth
-    private val mUserDatabase = LocalDatabase.getDatabase(context).userDAO()
+    private val mFirebaseAuth: FirebaseAuth = Firebase.auth
+    private val mFirebaseDatabase = Firebase.database.reference
+    private val mSharedPreferences = SharedPreferences(context)
 
-    fun verifySignedInUser(listener: FirebaseListener<User>) {
+    fun verifySignedInUser(listener: ApiListener<User>) {
 
-        val currentUser = auth.currentUser
+        val currentUser = mFirebaseAuth.currentUser
 
         if(currentUser != null){
             val user = User()
             user.uid = currentUser.uid
             user.email = currentUser.email.toString()
-            user.name = currentUser.displayName.toString()
-
-            mUserDatabase.clear()
-            mUserDatabase.save(user)
+            user.name = mSharedPreferences.get("name")
 
             listener.onSucess(user)
         } else {
@@ -31,42 +31,73 @@ class UserRepository(val context: Context)  {
         }
     }
 
-    fun login(email: String, password: String, listener: FirebaseListener<User>) {
+    fun getUserName(): String = mSharedPreferences.get("name")
 
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+    fun login(email: String, password: String, listener: ApiListener<User>) {
+
+        mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = User()
-                user.uid = auth.currentUser?.uid.toString()
-                user.email = auth.currentUser?.email.toString()
-                user.name = auth.currentUser?.displayName.toString()
+                user.uid = mFirebaseAuth.currentUser?.uid.toString()
+                user.email = mFirebaseAuth.currentUser?.email.toString()
 
-                mUserDatabase.clear()
-                mUserDatabase.save(user)
+                mFirebaseDatabase.child("users").child(user.uid).child("name").get().addOnCompleteListener {
+                    user.name = it.result?.value.toString()
 
-                listener.onSucess(user)
+                    mSharedPreferences.store("uid", user.uid)
+                    mSharedPreferences.store("email", user.email)
+                    mSharedPreferences.store("name", user.name)
+
+                    listener.onSucess(user)
+                }
             } else {
                 listener.onFailure(task.exception?.message.toString())
             }
         }
     }
 
-    fun register(email: String, password: String, listener: FirebaseListener<User>) {
+    fun register(name: String, email: String, password: String, listener: ApiListener<User>) {
 
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = User()
-                user.uid = auth.currentUser?.uid.toString()
-                user.email = auth.currentUser?.email.toString()
-                user.name = auth.currentUser?.displayName.toString()
-                //Salvar no banco
-                listener.onSucess(user)
+                user.uid = mFirebaseAuth.currentUser?.uid.toString()
+                user.email = mFirebaseAuth.currentUser?.email.toString()
+                user.name = name
+                mFirebaseDatabase.child("users").child(user.uid).child("name").setValue(name).addOnCompleteListener {
+                    mSharedPreferences.store("uid", user.uid)
+                    mSharedPreferences.store("email", user.email)
+                    mSharedPreferences.store("name", user.name)
+                    listener.onSucess(user)
+                }
             } else {
                 listener.onFailure(task.exception?.message.toString())
             }
+        }
+    }
+
+    fun updateName(name: String, listener: ApiListener<User>) {
+        val currentUser = mFirebaseAuth.currentUser
+
+        val user = User()
+        user.uid = mFirebaseAuth.currentUser?.uid.toString()
+        user.email = mFirebaseAuth.currentUser?.email.toString()
+        user.name = name
+
+        if (name != "") {
+            mFirebaseDatabase.child("users").child(currentUser!!.uid).child("name").setValue(name).addOnCompleteListener {
+                mSharedPreferences.store("name", name)
+                listener.onSucess(user)
+            }
+        } else {
+            listener.onFailure("Ocorreu um erro ao atualizar os dados. Tente novamente.")
         }
     }
 
     fun logout() {
-        auth.signOut()
+        mSharedPreferences.remove("uid")
+        mSharedPreferences.remove("email")
+        mSharedPreferences.remove("name")
+        mFirebaseAuth.signOut()
     }
 }

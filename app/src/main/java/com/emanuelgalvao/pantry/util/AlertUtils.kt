@@ -1,16 +1,21 @@
 package com.emanuelgalvao.pantry.util
 
+import android.view.Gravity
 import android.view.View
-import com.emanuelgalvao.pantry.R
+import android.widget.FrameLayout
 import com.google.android.material.snackbar.Snackbar
 
 
 class AlertUtils {
 
     companion object {
-        fun showSnackbar(view: View, message: String) {
-            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-            snackbar.setBackgroundTint(view.resources.getColor(R.color.background_red))
+        fun showSnackbar(view: View, message: String, color: Int) {
+            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+            val snackView = snackbar.view
+            val params = snackView.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            snackView.layoutParams = params
+            snackbar.setBackgroundTint(color)
             snackbar.show()
         }
     }

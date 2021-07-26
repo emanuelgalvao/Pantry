@@ -1,6 +1,17 @@
 package com.emanuelgalvao.pantry.service.model
 
-class ProductAPI {
+import com.google.gson.annotations.SerializedName
 
-    val nome: String = ""
-}
+data class ProductAPI(
+    @SerializedName("nome")
+    var name: String = "",
+
+    @SerializedName("ean")
+    var ean: String = "",
+
+    @SerializedName("tipo_embalagem")
+    var packagingType: String = "",
+
+    @SerializedName("quantidade_embalagem")
+    var quantityPackaging: String = "",
+)

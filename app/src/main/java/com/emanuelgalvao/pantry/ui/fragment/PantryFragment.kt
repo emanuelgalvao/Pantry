@@ -1,13 +1,12 @@
 package com.emanuelgalvao.pantry.ui.fragment
 
-import android.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.emanuelgalvao.pantry.R
@@ -73,12 +72,7 @@ class PantryFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showHelpDialog() {
-        val builder = AlertDialog.Builder(context)
-            .setTitle("Minha despensa")
-            .setMessage("Nesta tela você pode vizualizar os itens que você possui em sua despensa.\n\nItens marcados com a cor vermelha encontram-se vencidos.\n\nItens marcados com a cor amarela vencem hoje ou nos próximos 2 dias.")
-            .setPositiveButton("Ok") { _, _ -> run {} }
-
-        builder.show()
+        AlertUtils.showInfoDialog(requireContext(), "Minha despensa", "Nesta tela você pode vizualizar os itens que você possui em sua despensa.\n\nItens marcados com a cor vermelha encontram-se vencidos.\n\nItens marcados com a cor amarela vencem hoje ou nos próximos 2 dias.")
     }
 
     override fun onClick(v: View?) {

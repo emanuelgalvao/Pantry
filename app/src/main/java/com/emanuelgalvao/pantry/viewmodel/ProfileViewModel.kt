@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.emanuelgalvao.pantry.BuildConfig
 import com.emanuelgalvao.pantry.service.listener.ApiListener
 import com.emanuelgalvao.pantry.service.listener.ValidationListener
 import com.emanuelgalvao.pantry.service.model.User
@@ -21,6 +22,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     private val mUserName = MutableLiveData<String>()
     val userName: LiveData<String> = mUserName
+
+    private val mVersionName = MutableLiveData<String>()
+    val versionName: LiveData<String> = mVersionName
 
     fun logout() {
         mUserRepository.logout()
@@ -47,5 +51,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         } else {
             mUpdateData.value = ValidationListener("Preencha o nome.")
         }
+    }
+
+    fun getVersionName() {
+        mVersionName.value = BuildConfig.VERSION_NAME
     }
 }

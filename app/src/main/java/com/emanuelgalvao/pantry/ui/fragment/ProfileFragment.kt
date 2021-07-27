@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
 import com.emanuelgalvao.pantry.ui.activity.LoginActivity
 import com.emanuelgalvao.pantry.ui.activity.UserDataActivity
+import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
@@ -23,6 +24,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
         root.text_my_data.setOnClickListener(this)
+        root.text_info.setOnClickListener(this)
         root.text_log_out.setOnClickListener(this)
 
         observers()
@@ -33,6 +35,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.text_my_data -> startActivity(Intent(activity, UserDataActivity::class.java))
+            R.id.text_info -> mViewModel.getVersionName()
             R.id.text_log_out -> logout()
         }
     }
@@ -44,6 +47,15 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 activity?.finish()
             }
         })
+
+        mViewModel.versionName.observe(viewLifecycleOwner, {
+            showInfoDialog(it)
+        })
+    }
+
+    private fun showInfoDialog(versionName: String) {
+        val appName = getString(R.string.app_name)
+        AlertUtils.showInfoDialog(requireContext(), "Sobre", "${appName}\n\nVersão: ${versionName}\n\nDesenvolvedor:\nEmanuel Rodrigues Galvão")
     }
 
     private fun logout() {

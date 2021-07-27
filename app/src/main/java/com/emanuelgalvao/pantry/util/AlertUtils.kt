@@ -1,5 +1,7 @@
 package com.emanuelgalvao.pantry.util
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -17,6 +19,15 @@ class AlertUtils {
             snackView.layoutParams = params
             snackbar.setBackgroundTint(color)
             snackbar.show()
+        }
+
+        fun showInfoDialog(context: Context, title: String, message: String) {
+            val builder = AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Ok") { _, _ -> run {} }
+
+            builder.show()
         }
     }
 }

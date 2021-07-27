@@ -1,6 +1,5 @@
 package com.emanuelgalvao.pantry.ui.fragment
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,12 +77,7 @@ class ShoppingListFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showHelpDialog() {
-        val builder = AlertDialog.Builder(context)
-            .setTitle("Lista de compras")
-            .setMessage("Nesta tela você pode realizar o controle do que precisa comprar quando for ao mercado.\n\nVocê pode dar um 'check' nos itens que você já comprou ou excluir itens que não precisa mais comprar.")
-            .setPositiveButton("Ok") { _, _ -> run {} }
-
-        builder.show()
+        AlertUtils.showInfoDialog(requireContext(), "Lista de compras", "Nesta tela você pode realizar o controle do que precisa comprar quando for ao mercado.\n\nVocê pode dar um 'check' nos itens que você já comprou ou excluir itens que não precisa mais comprar.")
     }
 
     override fun onClick(v: View?) {

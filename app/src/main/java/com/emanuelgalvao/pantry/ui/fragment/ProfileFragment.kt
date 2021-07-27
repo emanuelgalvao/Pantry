@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.ui.activity.ConfigurationActivity
 import com.emanuelgalvao.pantry.ui.activity.LoginActivity
 import com.emanuelgalvao.pantry.ui.activity.UserDataActivity
 import com.emanuelgalvao.pantry.util.AlertUtils
@@ -24,6 +25,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
         root.text_my_data.setOnClickListener(this)
+        root.text_configuration.setOnClickListener(this)
         root.text_info.setOnClickListener(this)
         root.text_log_out.setOnClickListener(this)
 
@@ -35,6 +37,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.text_my_data -> startActivity(Intent(activity, UserDataActivity::class.java))
+            R.id.text_configuration -> startActivity(Intent(activity, ConfigurationActivity::class.java))
             R.id.text_info -> mViewModel.getVersionName()
             R.id.text_log_out -> logout()
         }

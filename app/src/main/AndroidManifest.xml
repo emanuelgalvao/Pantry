@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pantry"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.activity.ConfigurationActivity"/>
         <activity android:name=".ui.activity.UserDataActivity"/>
         <activity android:name=".ui.activity.ReadCodeActivity" />
         <activity android:name=".ui.activity.ShoppingListFormActivity" />

@@ -6,13 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.emanuelgalvao.pantry.service.listener.ApiListener
 import com.emanuelgalvao.pantry.service.listener.ValidationListener
+import com.emanuelgalvao.pantry.service.model.Configuration
 import com.emanuelgalvao.pantry.service.model.User
+import com.emanuelgalvao.pantry.service.repository.ConfigurationRepository
 import com.emanuelgalvao.pantry.service.repository.UserRepository
 import com.emanuelgalvao.pantry.util.StringUtils
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mRepository: UserRepository = UserRepository(application)
+    private val mUserRepository: UserRepository = UserRepository(application)
+    private val mConfigurationRepository: ConfigurationRepository = ConfigurationRepository(application)
 
     private val mLogin = MutableLiveData<ValidationListener>()
     val login: LiveData<ValidationListener> = mLogin
@@ -24,7 +27,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val logged: LiveData<ValidationListener> = mLogged
 
     fun verifySignedInUser() {
-        mRepository.verifySignedInUser(object : ApiListener<User>{
+        mUserRepository.verifySignedInUser(object : ApiListener<User>{
             override fun onSucess(model: User) {
                 mLogged.value = ValidationListener()
             }
@@ -44,7 +47,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }else if(!StringUtils.validatePassword(password)) {
                 mLogin.value = ValidationListener("Senha inválida!")
             } else {
-                mRepository.login(email, password, object : ApiListener<User> {
+                mUserRepository.login(email, password, object : ApiListener<User> {
                     override fun onSucess(model: User) {
                         mLogin.value = ValidationListener()
                     }
@@ -68,7 +71,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }else if(!StringUtils.validatePassword(password)) {
                 mRegister.value = ValidationListener("A senha deve ter pelo menos 6 caracteres.")
             } else {
-                mRepository.register(name, email, password, object : ApiListener<User> {
+                mUserRepository.register(name, email, password, object : ApiListener<User> {
                     override fun onSucess(model: User) {
                         mRegister.value = ValidationListener()
                     }
@@ -83,6 +86,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             mRegister.value = ValidationListener("Preencha o email.")
         } else {
             mRegister.value = ValidationListener("Preencha a senha.")
+        }
+    }
+
+    fun verifyConfiguration() {
+        val configuration: Configuration = mConfigurationRepository.find()
+
+        if (configuration == null) {
+            mConfigurationRepository.save(Configuration())
         }
     }
 }

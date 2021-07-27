@@ -46,4 +46,15 @@
     <string name="description">Descrição</string>
     <string name="quantity">Quantidade</string>
     <string name="about">Sobre</string>
+    <string name="text_delete_shopping_item_configuration">Ao dar \'check\' em item da lista de compras remover automaticamente</string>
+    <string name="number_days_due_date_configuration">Quantidade de dias antes de vencer que deve destacar o item</string>
+    <string name="enable_flash_configuration">Ligar lanterna ao ler código de barras</string>
+
+    <string-array name="array_due_days">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>

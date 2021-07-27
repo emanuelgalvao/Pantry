@@ -25,6 +25,7 @@ class SplashActivity : AppCompatActivity() {
 
         observers()
         mViewModel.verifySignedInUser()
+        mViewModel.verifyConfiguration()
 
         Handler(Looper.getMainLooper()).postDelayed({
 

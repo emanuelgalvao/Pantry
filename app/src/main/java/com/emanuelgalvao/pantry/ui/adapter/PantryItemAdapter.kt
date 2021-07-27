@@ -13,6 +13,7 @@ class PantryItemAdapter: RecyclerView.Adapter<PantryItemViewHolder>() {
     private var mList: List<PantryItem> = arrayListOf()
     private lateinit var mListener: ItemListener<PantryItem>
     private var mShowDeleteButton: Boolean = true
+    private var mDueDays: Int = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PantryItemViewHolder {
         val item = LayoutInflater.from(parent.context).inflate(R.layout.adapter_pantry_item, parent, false)
@@ -20,7 +21,7 @@ class PantryItemAdapter: RecyclerView.Adapter<PantryItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PantryItemViewHolder, position: Int) {
-        holder.bindData(mList[position], mShowDeleteButton)
+        holder.bindData(mList[position], mShowDeleteButton, mDueDays)
     }
 
     override fun getItemCount(): Int {
@@ -33,6 +34,10 @@ class PantryItemAdapter: RecyclerView.Adapter<PantryItemViewHolder>() {
 
     fun setShowDeleteButton(showDeleteButton: Boolean) {
         mShowDeleteButton = showDeleteButton
+    }
+
+    fun setDueDays(dueDays: Int) {
+        mDueDays = dueDays
     }
 
     fun updateList(list: List<PantryItem>) {

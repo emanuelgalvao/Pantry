@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
@@ -17,14 +18,17 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.viewmodel.ConfigurationViewModel
 import com.google.zxing.BarcodeFormat
 import kotlinx.android.synthetic.main.activity_read_code.*
 
 class ReadCodeActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var mViewModel: ConfigurationViewModel
     private lateinit var codeScanner: CodeScanner
 
     private val REQUEST_CODE_CAMERA = 100
+    private var enableFlash = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +36,30 @@ class ReadCodeActivity : AppCompatActivity(), View.OnClickListener {
 
         supportActionBar?.hide()
 
+        mViewModel = ViewModelProvider(this).get(ConfigurationViewModel::class.java)
+
+        mViewModel.getConfiguration()
+
         text_fill_manually.setOnClickListener(this)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, Array(1){Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA)
-        else
-            initializeBarCodeReader()
+        observers()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (codeScanner != null) {
+            codeScanner.releaseResources()
+        }
+    }
+
+    private fun observers() {
+        mViewModel.configuration.observe(this, {
+            enableFlash = it.enableFlash
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(this, Array(1){Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA)
+            else
+                initializeBarCodeReader()
+        })
     }
 
     override fun onClick(v: View?) {
@@ -72,7 +94,7 @@ class ReadCodeActivity : AppCompatActivity(), View.OnClickListener {
         codeScanner.autoFocusMode = AutoFocusMode.SAFE
         codeScanner.scanMode = ScanMode.SINGLE
         codeScanner.isAutoFocusEnabled = true
-        codeScanner.isFlashEnabled = false
+        codeScanner.isFlashEnabled = enableFlash
 
         codeScanner.decodeCallback = DecodeCallback {
             val bundle = Bundle()

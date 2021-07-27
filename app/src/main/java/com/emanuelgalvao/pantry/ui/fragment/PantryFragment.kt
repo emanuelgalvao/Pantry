@@ -30,6 +30,8 @@ class PantryFragment : Fragment(), View.OnClickListener {
 
         mViewModel = ViewModelProvider(this).get(PantryViewModel::class.java)
 
+        mViewModel.getConfiguration()
+
         val recycler = root.findViewById<RecyclerView>(R.id.recycler_pantry)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = mAdapter
@@ -68,6 +70,10 @@ class PantryFragment : Fragment(), View.OnClickListener {
             if (it.isSucess()) {
                 AlertUtils.showSnackbar(root, "Item removido com sucesso!", getColor(requireContext(), R.color.snack_green))
             }
+        })
+
+        mViewModel.configuration.observe(viewLifecycleOwner, {
+            mAdapter.setDueDays(it.dueDays)
         })
     }
 

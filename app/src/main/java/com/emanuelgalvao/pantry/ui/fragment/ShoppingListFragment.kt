@@ -24,11 +24,14 @@ class ShoppingListFragment : Fragment(), View.OnClickListener {
     private lateinit var mViewModel: ShoppingListViewModel
     private lateinit var mListener: ItemListener<ShoppingItem>
     private val mAdapter = ShoppingItemAdapter()
+    private var mDeleteShoppingItemOnChecked = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_shopping_list, container, false)
 
         mViewModel = ViewModelProvider(this).get(ShoppingListViewModel::class.java)
+
+        mViewModel.getConfiguration()
 
         val recycler = root.findViewById<RecyclerView>(R.id.recycler_shopping_list)
         recycler.layoutManager = LinearLayoutManager(context)
@@ -40,7 +43,11 @@ class ShoppingListFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onCheck(item: ShoppingItem) {
-                mViewModel.update(item, true)
+                if (!mDeleteShoppingItemOnChecked) {
+                    mViewModel.update(item, true)
+                } else {
+                    mViewModel.delete(item)
+                }
             }
 
             override fun onUnCheck(item: ShoppingItem) {
@@ -73,6 +80,10 @@ class ShoppingListFragment : Fragment(), View.OnClickListener {
                 AlertUtils.showSnackbar(root, "Item removido com sucesso!",
                     ContextCompat.getColor(requireContext(), R.color.snack_green))
             }
+        })
+
+        mViewModel.configuration.observe(viewLifecycleOwner, {
+            mDeleteShoppingItemOnChecked = it.deleteShoppingItem
         })
     }
 

@@ -24,7 +24,7 @@ class PantryItemViewHolder(itemView: View, val listener: ItemListener<PantryItem
     private var mTextItem: TextView = itemView.findViewById(R.id.text_item)
     private var mImageDelete: ImageView = itemView.findViewById(R.id.image_delete)
 
-    fun bindData(item: PantryItem, showDeleteButton: Boolean) {
+    fun bindData(item: PantryItem, showDeleteButton: Boolean, dueDays: Int) {
         mTextDate.text = item.dueDate.subSequence(0, 5)
         mTextItem.text = item.description
 
@@ -39,7 +39,7 @@ class PantryItemViewHolder(itemView: View, val listener: ItemListener<PantryItem
 
         val differenceDays = TimeUnit.MILLISECONDS.toDays(currentDate.time - dueDate.time)
 
-        if (differenceDays > -2 && differenceDays < 0) {
+        if (differenceDays > (0 - dueDays) && differenceDays < 0) {
             mLinearDueDate.background = ContextCompat.getDrawable(itemView.context, R.drawable.shape_rounded_due_expired_soon)
             mTextDue.setTextColor(ContextCompat.getColor(itemView.context, R.color.text_dark_yellow_soon))
             mTextDate.setTextColor(ContextCompat.getColor(itemView.context, R.color.text_dark_yellow_soon))

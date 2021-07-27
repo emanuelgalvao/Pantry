@@ -26,6 +26,9 @@ class ShoppingItemViewHolder(itemView: View, val listener: ItemListener<Shopping
         if (item.buyed) {
             mTextDescription.setTextColor(ContextCompat.getColor(itemView.context, R.color.text_gray))
             mTextDescription.setTypeface(mCheckBuyed.typeface, Typeface.ITALIC)
+        } else {
+            mTextDescription.setTextColor(ContextCompat.getColor(itemView.context, R.color.text_dark_gray))
+            mTextDescription.setTypeface(mCheckBuyed.typeface, Typeface.NORMAL)
         }
 
         if (!showActions) {

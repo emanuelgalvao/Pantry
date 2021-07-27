@@ -12,9 +12,9 @@ interface PantryItemDAO {
     @Delete
     fun delete(item: PantryItem): Int
 
-    @Query("SELECT * FROM pantry_item ORDER BY due_date ASC")
+    @Query("SELECT * FROM pantry_item ORDER BY DATE(due_date) ASC")
     fun findAll(): List<PantryItem>
 
-    @Query("SELECT * FROM pantry_item ORDER BY due_date ASC LIMIT 5")
+    @Query("SELECT * FROM pantry_item ORDER BY DATE(due_date) ASC LIMIT 5")
     fun findItemsHome(): List<PantryItem>
 }

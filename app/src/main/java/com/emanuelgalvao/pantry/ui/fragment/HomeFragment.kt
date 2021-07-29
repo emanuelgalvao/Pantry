@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.emanuelgalvao.pantry.R
 import com.emanuelgalvao.pantry.databinding.FragmentHomeBinding
 import com.emanuelgalvao.pantry.service.listener.ItemListener
@@ -17,13 +16,12 @@ import com.emanuelgalvao.pantry.service.model.ShoppingItem
 import com.emanuelgalvao.pantry.ui.adapter.PantryItemAdapter
 import com.emanuelgalvao.pantry.ui.adapter.ShoppingItemAdapter
 import com.emanuelgalvao.pantry.viewmodel.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var mPantryListener: ItemListener<PantryItem>
     private val mPantryAdapter = PantryItemAdapter()
@@ -31,9 +29,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var mShoppingListener: ItemListener<ShoppingItem>
     private val mShoppingAdapter = ShoppingItemAdapter()
 
-    private val binding get() = _binding!!
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view: View = binding.root
 
         mViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
@@ -41,10 +40,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         observers()
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val recyclerPantry = root.findViewById<RecyclerView>(R.id.recycler_pantry_home)
+        val recyclerPantry = binding.recyclerPantryHome
         recyclerPantry.layoutManager = LinearLayoutManager(context)
         recyclerPantry.adapter = mPantryAdapter
 
@@ -56,7 +52,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             override fun onUnCheck(item: PantryItem) {}
         }
 
-        val recyclerShopping = root.findViewById<RecyclerView>(R.id.recycler_shopping_list_home)
+        val recyclerShopping = binding.recyclerShoppingListHome
         recyclerShopping.layoutManager = LinearLayoutManager(context)
         recyclerShopping.adapter = mShoppingAdapter
 
@@ -68,10 +64,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
             override fun onUnCheck(item: ShoppingItem) {}
         }
 
-        root.text_see_more_due_soon.setOnClickListener(this)
-        root.text_see_more_shopping_list.setOnClickListener(this)
+        binding.textSeeMoreDueSoon.setOnClickListener(this)
+        binding.textSeeMoreShoppingList.setOnClickListener(this)
 
-        return root
+        return view
     }
 
     override fun onResume() {
@@ -87,7 +83,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private fun observers() {
         mViewModel.userName.observe(viewLifecycleOwner, {
-            text_hello.text = "Olá ${it}!"
+            binding.textHello.text = "Olá ${it}!"
         })
 
         mViewModel.pantryItemList.observe(viewLifecycleOwner, {

@@ -8,30 +8,34 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.FragmentProfileBinding
 import com.emanuelgalvao.pantry.ui.activity.ConfigurationActivity
 import com.emanuelgalvao.pantry.ui.activity.LoginActivity
 import com.emanuelgalvao.pantry.ui.activity.UserDataActivity
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mViewModel: ProfileViewModel
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_profile, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val view: View = binding.root
 
         mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        root.text_my_data.setOnClickListener(this)
-        root.text_configuration.setOnClickListener(this)
-        root.text_info.setOnClickListener(this)
-        root.text_log_out.setOnClickListener(this)
+        binding.textMyData.setOnClickListener(this)
+        binding.textConfiguration.setOnClickListener(this)
+        binding.textInfo.setOnClickListener(this)
+        binding.textLogOut.setOnClickListener(this)
 
         observers()
 
-        return root
+        return view
     }
 
     override fun onClick(v: View?) {
@@ -59,6 +63,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private fun showInfoDialog(versionName: String) {
         val appName = getString(R.string.app_name)
         AlertUtils.showInfoDialog(requireContext(), "Sobre", "${appName}\n\nVersão: ${versionName}\n\nDesenvolvedor:\nEmanuel Rodrigues Galvão")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun logout() {

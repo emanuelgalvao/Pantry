@@ -8,32 +8,35 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.FragmentShoppingListBinding
 import com.emanuelgalvao.pantry.service.listener.ItemListener
 import com.emanuelgalvao.pantry.service.model.ShoppingItem
 import com.emanuelgalvao.pantry.ui.adapter.ShoppingItemAdapter
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.ShoppingListViewModel
-import kotlinx.android.synthetic.main.fragment_shopping_list.*
-import kotlinx.android.synthetic.main.fragment_shopping_list.view.*
 
 
 class ShoppingListFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mViewModel: ShoppingListViewModel
+    private var _binding: FragmentShoppingListBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mListener: ItemListener<ShoppingItem>
     private val mAdapter = ShoppingItemAdapter()
     private var mDeleteShoppingItemOnChecked = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_shopping_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        _binding = FragmentShoppingListBinding.inflate(inflater, container, false)
+        val view: View = binding.root
 
         mViewModel = ViewModelProvider(this).get(ShoppingListViewModel::class.java)
 
         mViewModel.getConfiguration()
 
-        val recycler = root.findViewById<RecyclerView>(R.id.recycler_shopping_list)
+        val recycler = binding.recyclerShoppingList
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = mAdapter
 
@@ -55,11 +58,11 @@ class ShoppingListFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        root.image_help.setOnClickListener(this)
+        binding.imageHelp.setOnClickListener(this)
 
         observers()
 
-        return root
+        return view
     }
 
     override fun onResume() {
@@ -77,7 +80,7 @@ class ShoppingListFragment : Fragment(), View.OnClickListener {
 
         mViewModel.validationDelete.observe(viewLifecycleOwner, {
             if (it.isSucess()) {
-                AlertUtils.showSnackbar(root, "Item removido com sucesso!",
+                AlertUtils.showSnackbar(binding.root, "Item removido com sucesso!",
                     ContextCompat.getColor(requireContext(), R.color.snack_green))
             }
         })

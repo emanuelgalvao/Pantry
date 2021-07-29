@@ -7,24 +7,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.ActivityLoginBinding
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.LoginViewModel
-import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        supportActionBar?.hide()
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        text_enter_button.setOnClickListener(this)
-        text_register.setOnClickListener(this)
+        supportActionBar?.hide()
+
+        binding.textEnterButton.setOnClickListener(this)
+        binding.textRegister.setOnClickListener(this)
 
         observers()
     }
@@ -38,11 +40,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun login() {
-        val email = edit_email.text.toString().trim()
-        val password = edit_password.text.toString().trim()
+        val email = binding.editEmail.text.toString().trim()
+        val password = binding.editPassword.text.toString().trim()
 
-        text_enter_button.isVisible = false
-        progress_login.isVisible = true
+        binding.textEnterButton.isVisible = false
+        binding.progressLogin.isVisible = true
         mViewModel.login(email, password)
     }
 
@@ -51,9 +53,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             if (it.isSucess()) {
                 startActivity(Intent(this, MainActivity::class.java))
             } else {
-                text_enter_button.isVisible = true
-                progress_login.isVisible = false
-                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
+                binding.textEnterButton.isVisible = true
+                binding.progressLogin.isVisible = false
+                AlertUtils.showSnackbar(binding.root, it.getMessage(), getColor(R.color.snack_red))
             }
         })
     }

@@ -8,31 +8,33 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.FragmentPantryBinding
 import com.emanuelgalvao.pantry.service.listener.ItemListener
 import com.emanuelgalvao.pantry.service.model.PantryItem
 import com.emanuelgalvao.pantry.ui.adapter.PantryItemAdapter
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.PantryViewModel
-import kotlinx.android.synthetic.main.fragment_pantry.*
-import kotlinx.android.synthetic.main.fragment_pantry.view.*
 
 class PantryFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mViewModel: PantryViewModel
+    private var _binding: FragmentPantryBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mListener: ItemListener<PantryItem>
     private val mAdapter = PantryItemAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        val root = inflater.inflate(R.layout.fragment_pantry, container, false)
+        _binding = FragmentPantryBinding.inflate(inflater, container, false)
+        val view: View = binding.root
 
         mViewModel = ViewModelProvider(this).get(PantryViewModel::class.java)
 
         mViewModel.getConfiguration()
 
-        val recycler = root.findViewById<RecyclerView>(R.id.recycler_pantry)
+        val recycler = binding.recyclerPantry
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = mAdapter
 
@@ -46,11 +48,11 @@ class PantryFragment : Fragment(), View.OnClickListener {
             override fun onUnCheck(item: PantryItem) {}
         }
 
-        root.image_help.setOnClickListener(this)
+        binding.imageHelp.setOnClickListener(this)
 
         observers()
 
-        return root
+        return view
     }
 
     override fun onResume() {
@@ -68,7 +70,7 @@ class PantryFragment : Fragment(), View.OnClickListener {
 
         mViewModel.validationDelete.observe(viewLifecycleOwner, {
             if (it.isSucess()) {
-                AlertUtils.showSnackbar(root, "Item removido com sucesso!", getColor(requireContext(), R.color.snack_green))
+                AlertUtils.showSnackbar(binding.root, "Item removido com sucesso!", getColor(requireContext(), R.color.snack_green))
             }
         })
 
@@ -79,6 +81,11 @@ class PantryFragment : Fragment(), View.OnClickListener {
 
     private fun showHelpDialog() {
         AlertUtils.showInfoDialog(requireContext(), "Minha despensa", "Nesta tela você pode vizualizar os itens que você possui em sua despensa.\n\nItens marcados com a cor vermelha encontram-se vencidos.\n\nItens marcados com a cor amarela vencem hoje ou nos próximos 2 dias.")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onClick(v: View?) {

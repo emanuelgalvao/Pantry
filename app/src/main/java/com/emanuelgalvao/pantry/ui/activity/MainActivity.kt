@@ -12,7 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.emanuelgalvao.pantry.R
 import com.emanuelgalvao.pantry.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -20,11 +19,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        supportActionBar?.hide()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.hide()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupActionBarWithNavController(navController!!, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        fab_add.setOnClickListener(this)
+        binding.fabAdd.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         val options = arrayOf("Adicionar na despensa", "Adicionar na lista de compras")
-        builder.setItems(options) { dialog, which ->
+        builder.setItems(options) { _, which ->
             when (which) {
                 0 -> startActivity(Intent(this, ReadCodeActivity::class.java))
                 1 -> startActivity(Intent(this, ShoppingListFormActivity::class.java))

@@ -18,12 +18,13 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.ActivityReadCodeBinding
 import com.emanuelgalvao.pantry.viewmodel.ConfigurationViewModel
 import com.google.zxing.BarcodeFormat
-import kotlinx.android.synthetic.main.activity_read_code.*
 
 class ReadCodeActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var binding: ActivityReadCodeBinding
     private lateinit var mViewModel: ConfigurationViewModel
     private lateinit var codeScanner: CodeScanner
 
@@ -32,7 +33,8 @@ class ReadCodeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_read_code)
+        binding = ActivityReadCodeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
@@ -40,7 +42,7 @@ class ReadCodeActivity : AppCompatActivity(), View.OnClickListener {
 
         mViewModel.getConfiguration()
 
-        text_fill_manually.setOnClickListener(this)
+        binding.textFillManually.setOnClickListener(this)
 
         observers()
     }

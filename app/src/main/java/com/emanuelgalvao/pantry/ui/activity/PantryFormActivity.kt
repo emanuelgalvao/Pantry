@@ -9,21 +9,23 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.ActivityPantryFormBinding
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.PantryFormViewModel
-import kotlinx.android.synthetic.main.activity_pantry_form.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PantryFormActivity : AppCompatActivity(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
+    private lateinit var binding: ActivityPantryFormBinding
     private lateinit var mViewModel: PantryFormViewModel
 
     private var mFormatDate = SimpleDateFormat("dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pantry_form)
+        binding = ActivityPantryFormBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
@@ -35,24 +37,24 @@ class PantryFormActivity : AppCompatActivity(), View.OnClickListener, DatePicker
         if (barCode != null) {
             findProduct(barCode)
         }else {
-            progress_item.isVisible = false
-            text_wait.isVisible = false
+            binding.progressItem.isVisible = false
+            binding.textWait.isVisible = false
         }
 
-        image_back.setOnClickListener(this)
-        text_due_date.setOnClickListener(this)
-        text_due_date_value.setOnClickListener(this)
-        image_date.setOnClickListener(this)
-        text_save.setOnClickListener(this)
+        binding.imageBack.setOnClickListener(this)
+        binding.textDueDate.setOnClickListener(this)
+        binding.textDueDateValue.setOnClickListener(this)
+        binding.imageDate.setOnClickListener(this)
+        binding.textSave.setOnClickListener(this)
 
         observers()
     }
 
     private fun findProduct(barCode: String){
-        textfield_product.isVisible = false
-        text_due_date.isVisible = false
-        text_due_date_value.isVisible = false
-        image_date.isVisible = false
+        binding.textfieldProduct.isVisible = false
+        binding.textDueDate.isVisible = false
+        binding.textDueDateValue.isVisible = false
+        binding.imageDate.isVisible = false
         mViewModel.findProduct(barCode)
     }
 
@@ -67,26 +69,26 @@ class PantryFormActivity : AppCompatActivity(), View.OnClickListener, DatePicker
     private fun observers(){
         mViewModel.validation.observe(this, {
             if (!it.isSucess()) {
-                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
+                AlertUtils.showSnackbar(binding.root, it.getMessage(), getColor(R.color.snack_red))
             }
 
-            progress_item.isVisible = false
-            text_wait.isVisible = false
-            textfield_product.isVisible = true
-            text_due_date.isVisible = true
-            text_due_date_value.isVisible = true
-            image_date.isVisible = true
+            binding.progressItem.isVisible = false
+            binding.textWait.isVisible = false
+            binding.textfieldProduct.isVisible = true
+            binding.textDueDate.isVisible = true
+            binding.textDueDateValue.isVisible = true
+            binding.imageDate.isVisible = true
         })
 
         mViewModel.product.observe(this, {
-            edit_product.setText(it.name)
+            binding.editProduct.setText(it.name)
         })
 
         mViewModel.validationSave.observe(this, {
             if (!it.isSucess()) {
-                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
-                text_save.isVisible = true
-                progress_save.isVisible = false
+                AlertUtils.showSnackbar(binding.root, it.getMessage(), getColor(R.color.snack_red))
+                binding.textSave.isVisible = true
+                binding.progressSave.isVisible = false
             } else {
                 Toast.makeText(this, "Item salvo com sucesso.", Toast.LENGTH_SHORT).show()
                 finish()
@@ -106,15 +108,15 @@ class PantryFormActivity : AppCompatActivity(), View.OnClickListener, DatePicker
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
         val dateString = mFormatDate.format(calendar.time)
-        text_due_date_value.text = dateString
+        binding.textDueDateValue.text = dateString
     }
 
     private fun save() {
-        val description = edit_product.text.toString().trim()
-        val dueDate = text_due_date_value.text.toString()
+        val description = binding.editProduct.text.toString().trim()
+        val dueDate = binding.textDueDateValue.text.toString()
 
-        text_save.isVisible = false
-        progress_save.isVisible = true
+        binding.textSave.isVisible = false
+        binding.progressSave.isVisible = true
         mViewModel.save(description, dueDate)
     }
 }

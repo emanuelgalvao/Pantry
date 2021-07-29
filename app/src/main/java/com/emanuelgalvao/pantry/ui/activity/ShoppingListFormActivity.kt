@@ -7,28 +7,26 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.ActivityShoppingListFormBinding
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.ShoppingListFormViewModel
-import kotlinx.android.synthetic.main.activity_pantry_form.image_back
-import kotlinx.android.synthetic.main.activity_shopping_list_form.*
-import kotlinx.android.synthetic.main.activity_shopping_list_form.edit_product
-import kotlinx.android.synthetic.main.activity_shopping_list_form.progress_save
-import kotlinx.android.synthetic.main.activity_shopping_list_form.text_save
 
 class ShoppingListFormActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var binding: ActivityShoppingListFormBinding
     private lateinit var mViewModel: ShoppingListFormViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shopping_list_form)
+        binding = ActivityShoppingListFormBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
         mViewModel = ViewModelProvider(this).get(ShoppingListFormViewModel::class.java)
 
-        image_back.setOnClickListener(this)
-        text_save.setOnClickListener(this)
+        binding.imageBack.setOnClickListener(this)
+        binding.textSave.setOnClickListener(this)
 
         observers()
 
@@ -37,9 +35,9 @@ class ShoppingListFormActivity : AppCompatActivity(), View.OnClickListener {
     private fun observers() {
         mViewModel.validationSave.observe(this, {
             if (!it.isSucess()) {
-                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
-                text_save.isVisible = true
-                progress_save.isVisible = false
+                AlertUtils.showSnackbar(binding.root, it.getMessage(), getColor(R.color.snack_red))
+                binding.textSave.isVisible = true
+                binding.progressSave.isVisible = false
             } else {
                 Toast.makeText(this, "Item salvo com sucesso.", Toast.LENGTH_SHORT).show()
                 finish()
@@ -55,11 +53,11 @@ class ShoppingListFormActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun save() {
-        val description = edit_product.text.toString().trim()
-        val quantity = edit_quantity.text.toString()
+        val description = binding.editProduct.text.toString().trim()
+        val quantity = binding.editQuantity.text.toString()
 
-        text_save.isVisible = false
-        progress_save.isVisible = true
+        binding.textSave.isVisible = false
+        binding.progressSave.isVisible = true
         mViewModel.save(description, quantity)
     }
 }

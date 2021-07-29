@@ -7,24 +7,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
+import com.emanuelgalvao.pantry.databinding.ActivityUserDataBinding
 import com.emanuelgalvao.pantry.util.AlertUtils
 import com.emanuelgalvao.pantry.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.activity_user_data.*
 
 class UserDataActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var binding: ActivityUserDataBinding
     private lateinit var mViewModel: ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_data)
+        binding = ActivityUserDataBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
         mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        image_back.setOnClickListener(this)
-        text_save.setOnClickListener(this)
+        binding.imageBack.setOnClickListener(this)
+        binding.textSave.setOnClickListener(this)
 
         mViewModel.getUserName()
 
@@ -37,14 +39,14 @@ class UserDataActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this, "Dados atualizados com sucesso.", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
-                text_save.isVisible = true
-                progress_save.isVisible = false
-                AlertUtils.showSnackbar(root, it.getMessage(), getColor(R.color.snack_red))
+                binding.textSave.isVisible = true
+                binding.progressSave.isVisible = false
+                AlertUtils.showSnackbar(binding.root, it.getMessage(), getColor(R.color.snack_red))
             }
         })
 
         mViewModel.userName.observe(this, {
-            edit_name.setText(it)
+            binding.editName.setText(it)
         })
     }
 
@@ -56,10 +58,10 @@ class UserDataActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun save() {
-        val name = edit_name.text.toString().trim()
+        val name = binding.editName.text.toString().trim()
 
-        text_save.isVisible = false
-        progress_save.isVisible = true
+        binding.textSave.isVisible = false
+        binding.progressSave.isVisible = true
         mViewModel.updateUser(name)
     }
 

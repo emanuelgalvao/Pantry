@@ -10,7 +10,7 @@ import com.emanuelgalvao.pantry.service.model.Configuration
 import com.emanuelgalvao.pantry.service.model.PantryItem
 import com.emanuelgalvao.pantry.service.model.ShoppingItem
 
-@Database(entities = [PantryItem::class, ShoppingItem::class, Configuration::class], version = 2)
+@Database(entities = [PantryItem::class, ShoppingItem::class, Configuration::class], version = 3)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun pantryItemDAO(): PantryItemDAO
@@ -24,7 +24,7 @@ abstract class LocalDatabase : RoomDatabase() {
             if (!Companion::INSTANCE.isInitialized) {
                 synchronized(LocalDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context, LocalDatabase::class.java, "pantryDB")
-                        .addMigrations(MIGRATION_1_2)
+                        .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                         .allowMainThreadQueries()
                         .build()
                 }
@@ -36,6 +36,13 @@ abstract class LocalDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("CREATE TABLE `configuration` (`id` INTEGER NOT NULL, `enable_flash` INT NOT NULL, `due_days` INT NOT NULL, `delete_shopping_item` INT NOT NULL, PRIMARY KEY(`id`))")
             }
+        }
+
+        private val MIGRATION_2_3 = object: Migration(2,3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE `configuration` ADD COLUMN `dark_mode` INTEGER DEFAULT 0 NOT NULL")
+            }
+
         }
     }
 }

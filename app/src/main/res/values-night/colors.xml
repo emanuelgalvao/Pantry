@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- BACKGROUND -->
+    <color name="background_primary">#212121</color>
+
+    <!-- ICONS -->
+    <color name="icon_gray">#FFFFFF</color>
+
+    <!-- BOTTOM NAVIGATION -->
+    <color name="text_gray">#FFFFFF</color>
+
+    <!-- VIEW -->
+    <color name="view_gray">#3A3A3A</color>
+
+</resources>

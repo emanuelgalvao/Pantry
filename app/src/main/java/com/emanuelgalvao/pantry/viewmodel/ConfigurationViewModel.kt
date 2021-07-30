@@ -1,6 +1,7 @@
 package com.emanuelgalvao.pantry.viewmodel
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,6 +40,19 @@ class ConfigurationViewModel(application: Application) : AndroidViewModel(applic
         if (configuration != null) {
             configuration.deleteShoppingItem = delete
             save(configuration)
+        }
+    }
+
+    fun setDarkMode(darkMode: Boolean) {
+        val configuration = mConfiguration.value
+        if (configuration != null) {
+            configuration.darkMode = darkMode
+            save(configuration)
+
+            if (configuration.darkMode)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

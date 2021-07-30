@@ -38,7 +38,7 @@
         app:layout_constraintLeft_toLeftOf="@id/view_due_date"
         android:layout_marginStart="25dp"
         android:paddingHorizontal="5dp"
-        android:background="@color/background_white"
+        android:background="@color/background_primary"
         android:text="@string/items_due_soon"
         android:textColor="@color/text_red"/>
 
@@ -85,7 +85,7 @@
         app:layout_constraintLeft_toLeftOf="@id/view_items"
         android:layout_marginStart="25dp"
         android:paddingHorizontal="5dp"
-        android:background="@color/background_white"
+        android:background="@color/background_primary"
         android:text="@string/shopping_list"
         android:textColor="@color/text_blue"/>
 

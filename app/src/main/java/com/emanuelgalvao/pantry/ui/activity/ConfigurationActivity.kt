@@ -26,6 +26,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, Adapter
         binding.imageBack.setOnClickListener(this)
         binding.switchFlash.setOnClickListener(this)
         binding.switchShoppingItemDelete.setOnClickListener(this)
+        binding.switchDarkMode.setOnClickListener(this)
         binding.spinnerDaysDue.onItemSelectedListener = this
 
         mViewModel.getConfiguration()
@@ -39,6 +40,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, Adapter
             binding.switchFlash.isChecked = it.enableFlash
             binding.spinnerDaysDue.setSelection(it.dueDays - 1)
             binding.switchShoppingItemDelete.isChecked = it.deleteShoppingItem
+            binding.switchDarkMode.isChecked = it.darkMode
         })
     }
 
@@ -47,6 +49,7 @@ class ConfigurationActivity : AppCompatActivity(), View.OnClickListener, Adapter
             R.id.image_back -> finish()
             R.id.switch_flash -> mViewModel.setEnableFlash(binding.switchFlash.isChecked)
             R.id.switch_shopping_item_delete -> mViewModel.setDeleteShoppingItem(binding.switchShoppingItemDelete.isChecked)
+            R.id.switch_dark_mode -> mViewModel.setDarkMode(binding.switchDarkMode.isChecked)
         }
     }
 

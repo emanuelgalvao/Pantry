@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.emanuelgalvao.pantry.R
 import com.emanuelgalvao.pantry.viewmodel.LoginViewModel
@@ -44,6 +45,13 @@ class SplashActivity : AppCompatActivity() {
             if (it.isSucess()) {
                 logged = true
             }
+        })
+
+        mViewModel.configuration.observe(this, {
+            if (it.darkMode)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         })
     }
 }

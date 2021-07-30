@@ -26,6 +26,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val mLogged = MutableLiveData<ValidationListener>()
     val logged: LiveData<ValidationListener> = mLogged
 
+    private val mConfiguration = MutableLiveData<Configuration>()
+    val configuration: LiveData<Configuration> = mConfiguration
+
     fun verifySignedInUser() {
         mUserRepository.verifySignedInUser(object : ApiListener<User>{
             override fun onSucess(model: User) {
@@ -90,10 +93,13 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun verifyConfiguration() {
-        val configuration: Configuration = mConfigurationRepository.find()
+        var configuration: Configuration = mConfigurationRepository.find()
 
         if (configuration == null) {
             mConfigurationRepository.save(Configuration())
+            configuration = Configuration()
         }
+
+        mConfiguration.value = configuration
     }
 }

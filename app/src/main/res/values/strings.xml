@@ -49,6 +49,7 @@
     <string name="text_delete_shopping_item_configuration">Ao dar \'check\' em item da lista de compras remover automaticamente</string>
     <string name="number_days_due_date_configuration">Quantidade de dias antes de vencer que deve destacar o item</string>
     <string name="enable_flash_configuration">Ligar lanterna ao ler código de barras</string>
+    <string name="dark_mode">Modo escuro</string>
 
     <string-array name="array_due_days">
         <item>1</item>

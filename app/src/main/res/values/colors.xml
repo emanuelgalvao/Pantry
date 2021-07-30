@@ -10,9 +10,7 @@
 
     <!-- BACKGROUND -->
     <color name="background_red">#FA5555</color>
-    <color name="background_blue">#4389F3</color>
-    <color name="background_white">#FFFFFF</color>
-    <color name="background_gray">#EBEBEB</color>
+    <color name="background_primary">#FFFFFF</color>
 
     <!-- TEXT -->
     <color name="text_black">#1a1a1a</color>
@@ -50,4 +48,6 @@
     <color name="snack_red">#FA5555</color>
     <color name="snack_green">#28A745</color>
 
+    <!-- VIEW -->
+    <color name="view_gray">#EBEBEB</color>
 </resources>

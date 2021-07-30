@@ -98,4 +98,25 @@
         app:layout_constraintBottom_toBottomOf="@id/text_shopping_item_delete"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <TextView
+        android:id="@+id/text_dark_mode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_shopping_item_delete"
+        app:layout_constraintRight_toLeftOf="@id/switch_dark_mode"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="@string/dark_mode"
+        android:textSize="18sp"
+        android:textColor="@color/text_gray" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_dark_mode"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/text_dark_mode"
+        app:layout_constraintBottom_toBottomOf="@id/text_dark_mode"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

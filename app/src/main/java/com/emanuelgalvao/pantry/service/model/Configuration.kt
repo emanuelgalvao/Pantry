@@ -19,4 +19,7 @@ class Configuration {
 
     @ColumnInfo(name = "delete_shopping_item")
     var deleteShoppingItem: Boolean = false
+
+    @ColumnInfo(name = "dark_mode")
+    var darkMode: Boolean = false
 }
